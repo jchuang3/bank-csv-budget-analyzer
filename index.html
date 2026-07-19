@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>記帳分析</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <h1>記帳分析</h1>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="upload">上傳</button>
+      <button class="tab-btn" data-tab="all">全部交易</button>
+      <button class="tab-btn" data-tab="monthly">月報表</button>
+      <button class="tab-btn" data-tab="transport">交通分析</button>
+    </nav>
+  </header>
+
+  <!-- 上傳分頁 -->
+  <section id="tab-upload" class="tab-panel active">
+    <div class="upload-box" id="dropZone">
+      <p class="upload-hint">拖放 CSV 檔案到這裡，或</p>
+      <label class="file-btn">
+        選擇檔案
+        <input type="file" id="fileInput" accept=".csv" multiple hidden>
+      </label>
+      <p class="upload-sub">支援多檔案同時上傳，目前支援 AMEX / Chase 格式</p>
+    </div>
+    <div id="uploadResult"></div>
+
+    <div class="danger-zone">
+      <button id="clearAllBtn" class="ghost-btn">清除所有已匯入資料</button>
+    </div>
+  </section>
+
+  <!-- 全部交易分頁 -->
+  <section id="tab-all" class="tab-panel">
+    <div class="filter-bar">
+      <input type="text" id="searchBox" placeholder="搜尋交易說明...">
+      <select id="filterCategory"><option value="">全部分類</option></select>
+      <select id="filterBank"><option value="">全部銀行</option></select>
+      <select id="filterDirection">
+        <option value="">收入/支出皆顯示</option>
+        <option value="in">只看收入</option>
+        <option value="out">只看支出</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table id="allTable">
+        <thead>
+          <tr><th>日期</th><th>銀行</th><th>說明</th><th>分類</th><th>金額</th></tr>
+        </thead>
+        <tbody id="allTableBody"></tbody>
+      </table>
+    </div>
+    <p id="allEmptyState" class="empty">還沒有匯入任何交易紀錄，先到「上傳」分頁匯入 CSV 吧。</p>
+  </section>
+
+  <!-- 月報表分頁 -->
+  <section id="tab-monthly" class="tab-panel">
+    <div class="month-nav">
+      <button id="prevMonth" class="nav-btn" aria-label="上個月">‹</button>
+      <span id="monthLabel">—</span>
+      <button id="nextMonth" class="nav-btn" aria-label="下個月">›</button>
+    </div>
+    <p class="month-hint">以下數據僅顯示上方選定月份的交易，切換月份請用左右箭頭</p>
+
+    <div class="summary-cards">
+      <div class="card income">
+        <span class="card-label">收入</span>
+        <span class="card-amount" id="monthIncome">$0</span>
+      </div>
+      <div class="card expense">
+        <span class="card-label">支出</span>
+        <span class="card-amount" id="monthExpense">$0</span>
+      </div>
+      <div class="card net">
+        <span class="card-label">淨額</span>
+        <span class="card-amount" id="monthNet">$0</span>
+      </div>
+    </div>
+
+    <div class="summary">
+      <h3 class="section-title">支出分類佔比</h3>
+      <div class="chart" id="categoryChart"></div>
+    </div>
+
+    <div class="summary">
+      <div class="big-tx-header">
+        <h3 class="section-title">大額交易</h3>
+        <div class="threshold-input">
+          <span>≥ $</span>
+          <input type="number" id="bigTxThreshold" value="100" min="0" step="10">
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="bigTxTable">
+          <thead>
+            <tr><th>日期</th><th>銀行</th><th>說明</th><th>分類</th><th>金額</th></tr>
+          </thead>
+          <tbody id="bigTxTableBody"></tbody>
+        </table>
+      </div>
+      <p id="bigTxEmpty" class="empty">這個月沒有超過門檻的交易</p>
+    </div>
+
+    <div class="table-wrap">
+      <table id="monthTable">
+        <thead>
+          <tr><th>日期</th><th>銀行</th><th>說明</th><th>分類</th><th>金額</th></tr>
+        </thead>
+        <tbody id="monthTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+  <!-- 交通分析分頁 -->
+  <section id="tab-transport" class="tab-panel">
+    <p class="month-hint">點卡片可以展開/收合該類別的交易明細</p>
+    <div class="transport-cards" id="transportCards"></div>
+
+    <div class="summary">
+      <h3 class="section-title">每月交通花費（依細項）</h3>
+      <div class="table-wrap">
+        <table id="transportMonthlyTable">
+          <thead>
+            <tr>
+              <th>月份</th>
+              <th>Uber / Lyft</th>
+              <th>Turo</th>
+              <th>租車</th>
+              <th>大眾運輸</th>
+              <th>其他交通</th>
+              <th>總計</th>
+            </tr>
+          </thead>
+          <tbody id="transportMonthlyBody"></tbody>
+        </table>
+      </div>
+      <p id="transportEmpty" class="empty">還沒有交通相關的交易紀錄</p>
+    </div>
+  </section>
+</div>
+
+<script src="js/csv-parser.js"></script>
+<script src="js/categorizer.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

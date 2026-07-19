@@ -1,3 +1,29 @@
+# Bank CSV Budget Analyzer
+
+A lightweight, privacy-first personal finance tool that turns raw bank CSV
+exports into readable spending insights — entirely in your browser, with
+zero backend and zero data collection.
+
+## Why this exists
+
+- **Managing multiple banks is a mess.** AMEX and Chase export CSVs in
+  completely different formats. This tool auto-detects the format and
+  merges everything into one unified view — no manual reformatting.
+- **"Where did my money actually go this month?"** A one-click, adjustable
+  threshold (default $100) surfaces every large transaction — income or
+  expense — so nothing slips by unnoticed.
+- **Transportation spend is hard to track.** Rideshare, car rentals, and
+  transit all get lumped into one vague "transportation" line on most
+  bank statements. This tool splits it out into Uber/Lyft, Turo, car
+  rentals, and public transit, with monthly and per-transaction detail.
+
+  ## Privacy by design
+
+All parsing happens client-side. Your transaction data is stored only in
+your browser's localStorage and is never transmitted anywhere — not to a
+server, not to the developer, not to anyone. Fork it, self-host it, or
+just open `index.html` locally.
+
 # 我的記帳網站
 
 私人記帳工具，純前端、資料存在瀏覽器 localStorage，不上傳任何伺服器。
